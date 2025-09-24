@@ -1,0 +1,11 @@
+name: Update licence
+
+on:
+  schedule:
+    - cron: "0 7 1 1 *"
+  workflow_dispatch:
+
+jobs:
+  update-licence:
+    uses: FasterSpeeding/Piped/.github/workflows/update-licence.yml@030a614a47058aded1fc89ab1c28ccd4259a5ce7
+    secrets: inherit
