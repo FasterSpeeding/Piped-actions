@@ -1,7 +1,3 @@
-empty := shell('bash', 'bootstrap_cicd.bash')
+empty := shell('git submodule update', '--init', 'piped')
 
 import? './piped/justfiles/global.just'
-
-# Default command
-default:
-    just --list
