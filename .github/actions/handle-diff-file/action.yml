@@ -11,7 +11,12 @@ runs:
           artifacts/gogo.patch
           gogo.patch
 
-    - name: Run type-check job
-      uses: FasterSpeeding/Piped-actions/.github/actions/just-jobs@${{ github.action_ref }}
-      with:
-        task-names: check-diff-file
+    - name: Run Just jobs
+      shell: bash
+      env:
+        INSTALL_DEV_DEPS: true
+      run: |
+        set +o pipefail
+        eval "$(mise env -s bash)"
+
+        just check-diff-file

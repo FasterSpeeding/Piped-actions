@@ -7,7 +7,7 @@ inputs:
     required: true
   extra-installs:
     description: "List of extra tools to install alongside Just using mise"
-    default: "just"
+    default: ""
     required: false
   repository:
     description: "The repository's name"
@@ -19,12 +19,20 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Initialise environment with Mise
-      uses: FasterSpeeding/Piped-actions/.github/actions/mise-init@${{ github.action_ref }}
+    - name: Checkout repository
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       with:
-        install-args: "${{ inputs.extra-installs }}"
         repository: ${{ inputs.repository }}
         ref: ${{ inputs.ref }}
+
+    - name: Install Mise
+      shell: bash
+      run: |
+        curl https://mise.run | sh
+        echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
+
+        mise trust --all -q --silent
+        mise install -q --silent ${{ inputs.install-args }}
 
     - name: Run Just jobs
       shell: bash
@@ -32,5 +40,6 @@ runs:
         INSTALL_DEV_DEPS: true
       run: |
         set +o pipefail
+        eval "$(mise env -s bash)"
 
-        mise exec -- just ${{ inputs.task-names }}
+        just ${{ inputs.task-names }}
