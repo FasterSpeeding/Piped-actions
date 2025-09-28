@@ -1,4 +1,4 @@
-import? './justfiles/python-base.just'
+import? './piped/justfiles/global.just'
 
 # Default command
 default:
