@@ -1,5 +1,3 @@
-import? './justfiles/python-base.just'
+empty := shell('git submodule update', '--init', 'piped')
 
-# Default command
-default:
-    just --list
+import? './piped/justfiles/global.just'
