@@ -1,4 +1,4 @@
-name: Lint
+name: Lint Actions
 
 on:
   push:
@@ -10,5 +10,5 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
-    uses: FasterSpeeding/Piped/.github/workflows/lint.yml@6c6b256d9016d90a1cc5e152e7c4eef079287b81
+  actionlint:
+    uses: FasterSpeeding/Piped/.github/workflows/lint-actions.yml@6c6b256d9016d90a1cc5e152e7c4eef079287b81
