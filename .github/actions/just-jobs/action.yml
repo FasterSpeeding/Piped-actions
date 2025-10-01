@@ -29,7 +29,11 @@ runs:
     - name: Install Mise
       shell: bash
       run: |
-        curl https://mise.run | sh
+        case "$(uname -s)" in
+          CYGWIN*|MINGW*|*Msys)   winget install jdx.mise;;
+          *)                      curl https://mise.run | sh;;
+        esac
+
         echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
 
         mise trust --all -q --silent
