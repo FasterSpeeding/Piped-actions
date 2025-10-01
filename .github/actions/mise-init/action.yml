@@ -25,7 +25,7 @@ runs:
     - name: Install Mise
       shell: bash
       run: |
-        if [[ "$(uname)" == "WindowsNT" ]]
+        if [[ "$(uname -s)" =~ CYGWIN*|MINGW*|*Msys ]]
         then
           winget install jdx.mise
         else
