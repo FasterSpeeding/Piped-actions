@@ -25,7 +25,13 @@ runs:
     - name: Install Mise
       shell: bash
       run: |
-        curl https://mise.run | sh
+        if [[ "$(uname)" == "WindowsNT" ]]
+        then
+          winget install jdx.mise
+        else
+          curl https://mise.run | sh
+        fi
+
         echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
         mise trust --all -q --silent
         mise install -q --silent ${{ inputs.install-args }}
