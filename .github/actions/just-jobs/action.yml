@@ -33,7 +33,7 @@ runs:
     - name: Install Mise
       shell: bash
       run: |
-        if [[ "${ inputs.skip-installing-mise }" == "false" ]]
+        if [[ "${{ inputs.skip-installing-mise }}" == "false" ]]
         then
           case "$(uname -s)" in
             CYGWIN*|MINGW*|*Msys)   winget install jdx.mise --accept-package-agreements --accept-source-agreements;;
