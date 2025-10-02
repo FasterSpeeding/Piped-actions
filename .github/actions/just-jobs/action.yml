@@ -10,7 +10,7 @@ inputs:
     default: ""
     required: false
   skip-installing-mise:
-    description: "Whether to install Mise before running the job"
+    description: "Whether to skip installing Mise before running the job"
     default: "false"
     required: false
   repository:
