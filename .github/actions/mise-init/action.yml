@@ -26,11 +26,20 @@ runs:
       shell: bash
       run: |
         case "$(uname -s)" in
-          CYGWIN*|MINGW*|*Msys)   winget install jdx.mise --accept-package-agreements --accept-source-agreements;;
-          *)                      curl https://mise.run | sh;;
+          CYGWIN*|MINGW*|*Msys)   target="windows";;
+          *)                      target="unix";;
         esac
 
-        echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
+        if [[ "$target" == "windows" ]]
+        then
+          winget install jdx.mise --accept-package-agreements --accept-source-agreements
+        else
+          curl https://mise.run | sh
+          echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
+        fi
+
+        exec bash
+
         mise trust --all -q --silent
         mise install -q --silent ${{ inputs.install-args }}
 
