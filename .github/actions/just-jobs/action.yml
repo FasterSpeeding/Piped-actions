@@ -36,10 +36,11 @@ runs:
         if [[ "${{ inputs.skip-installing-mise }}" == "false" ]]
         then
           case "$(uname -s)" in
-            CYGWIN*|MINGW*|*Msys)   winget install jdx.mise --accept-package-agreements --accept-source-agreements;;
+            CYGWIN*|MINGW*|*Msys)   winget install jdx.mise --accept-package-agreements --accept-source-agreements && \
+                                      echo "$USERPROFILE\AppData\Local\mise\shims" >> $GITHUB_PATH;;
           *)                      curl https://mise.run | sh && \
                                     echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH;;
-        esac
+          esac
 
           exec bash
         fi
@@ -49,8 +50,6 @@ runs:
 
     - name: Run Just jobs
       shell: bash
-      env:
-        INSTALL_DEV_DEPS: true
       run: |
         set +o pipefail
         eval "$(mise env -s bash)"

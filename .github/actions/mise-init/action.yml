@@ -26,7 +26,8 @@ runs:
       shell: bash
       run: |
         case "$(uname -s)" in
-          CYGWIN*|MINGW*|*Msys)   winget install jdx.mise --accept-package-agreements --accept-source-agreements;;
+          CYGWIN*|MINGW*|*Msys)   winget install jdx.mise --accept-package-agreements --accept-source-agreements && \
+                                    echo "$USERPROFILE\AppData\Local\mise\shims" >> $GITHUB_PATH;;
           *)                      curl https://mise.run | sh && \
                                     echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH;;
         esac
