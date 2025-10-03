@@ -41,7 +41,7 @@ runs:
                                     echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH;;
         esac
 
-          bash exec
+          exec bash
         fi
 
         mise trust --all -q --silent
