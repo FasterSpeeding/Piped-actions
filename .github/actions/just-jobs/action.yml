@@ -37,10 +37,11 @@ runs:
         then
           case "$(uname -s)" in
             CYGWIN*|MINGW*|*Msys)   winget install jdx.mise --accept-package-agreements --accept-source-agreements;;
-            *)                      curl https://mise.run | sh;;
-          esac
+          *)                      curl https://mise.run | sh && \
+                                    echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH;;
+        esac
 
-          echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH
+          bash exec
         fi
 
         mise trust --all -q --silent
