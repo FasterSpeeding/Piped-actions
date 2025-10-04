@@ -58,6 +58,7 @@ runs:
     - name: Export Mise env variables
       shell: bash
       run: |  # THIS CODE IS COPIED FROM MISE-INIT, UPDATE THERE FIRST!!!
+        set -x
         echo "Exporting Mise env vars"
 
         readarray -d $'\0' ignored < <(
