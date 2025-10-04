@@ -34,4 +34,4 @@ runs:
     - name: Install version-specific tools
       if: ${{ use-local != '' }}
       shell: bash
-      run: mise use ${{ inputs.use-local }}
+      run: mise use --env local ${{ inputs.use-local }}
