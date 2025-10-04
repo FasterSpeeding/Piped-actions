@@ -33,7 +33,7 @@ runs:
     - name: Install Mise
       shell: bash
       run: |
-        if [[ "${{ inputs.skip-installing-mise }}" == "false" ]]
+        if [[ "${{ inputs.skip-installing-mise }}" != "false" ]]
         then
           echo "Skipping installing Mise"
         elif [[ "$(uname -s)" =~ ^((((CYGWIN)|(MINGW)).*)|(.*Msys))$ ]]
@@ -47,10 +47,14 @@ runs:
           bin_paths="$HOME/.local/share/mise/bin"
         fi
 
-        echo "Adding $bin_paths to \$GITHUB_PATH"
-        echo "$bin_paths" >> $GITHUB_PATH
+        if [[ -n "${bin_paths:-}" ]]
+        then
+          echo "Adding $bin_paths to \$GITHUB_PATH"
+          echo "$bin_paths" >> $GITHUB_PATH
 
-        exec bash
+          exec bash
+        fi
+
         mise trust --all -q --silent
         mise install just ${{ inputs.extra-installs }}
 
