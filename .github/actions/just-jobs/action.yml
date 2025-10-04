@@ -49,7 +49,7 @@ runs:
         exec bash
 
         mise trust --all
-        mise install ${{ inputs.install-args }}
+        mise install just ${{ inputs.extra-installs }}
 
         echo "Exporting Mise env vars"
 
