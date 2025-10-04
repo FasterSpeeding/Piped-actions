@@ -9,10 +9,6 @@ inputs:
     description: "List of extra tools to install alongside Just using mise"
     default: ""
     required: false
-  skip-mise-setup:
-    description: "Whether to skip installing Mise before running the job"
-    default: "false"
-    required: false
   repository:
     description: "The repository's name"
     default: ${{ github.repository }}
@@ -32,8 +28,8 @@ runs:
 
     - name: Install Mise
       shell: bash
-      if: ${{ inputs.skip-mise-setup != "false" }}
-      run: |
+      if: ${{ env.MISE_SETUP == "" }}
+      run: |  # THIS CODE IS COPIED FROM MISE-INIT, UPDATE THERE FIRST!!!
         set -eu +o pipefail
 
         if [[ "$(uname -s)" =~ ^((((CYGWIN)|(MINGW)).*)|(.*Msys))$ ]]
@@ -52,8 +48,36 @@ runs:
 
         exec bash
 
-        mise trust --all -q --silent
-        mise install just ${{ inputs.extra-installs }}
+        mise trust --all
+        mise install ${{ inputs.install-args }}
+
+        echo "Exporting Mise env vars"
+
+        readarray -d $'\0' ignored < <(
+          mise env --redacted --json | jq -c --raw-output0 '. | keys_unsorted | .[]')
+
+        while read -r -d $'\0' key; read -r -d $'\0' value
+        do
+          skip=false
+          for ignored_key in "${ignored[@]}"
+          do
+            if [[ "$key" == "$ignored_key" ]]
+            then
+              skip=true
+              break
+            fi
+          done
+
+          if [[ $skip == false ]]
+          then
+            echo "Exporting env key: \$$key"
+            echo "$key=$value" >> "$GITHUB_ENV"
+          else
+            echo "Ignoring env key: $key"
+          fi
+        done < <(mise env --json | jq -c --raw-output0 '. | to_entries | map([.key, .value]) | flatten | .[]')
+
+        echo "MISE_SETUP=true" >> "$GITHUB_ENV"
 
     - name: Run Just jobs
       shell: bash

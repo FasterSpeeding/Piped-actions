@@ -69,3 +69,5 @@ runs:
             echo "Ignoring env key: $key"
           fi
         done < <(mise env --json | jq -c --raw-output0 '. | to_entries | map([.key, .value]) | flatten | .[]')
+
+        echo "MISE_SETUP=true" >> "$GITHUB_ENV"
