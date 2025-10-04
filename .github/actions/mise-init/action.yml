@@ -41,8 +41,8 @@ runs:
 
         exec bash
 
-        mise trust --all -q --silent
-        mise install -q --silent ${{ inputs.install-args }}
+        mise trust --all
+        mise install ${{ inputs.install-args }}
 
         echo "Exporting Mise env vars"
 

@@ -9,7 +9,7 @@ inputs:
     description: "List of extra tools to install alongside Just using mise"
     default: ""
     required: false
-  skip-installing-mise:
+  skip-mise-setup:
     description: "Whether to skip installing Mise before running the job"
     default: "false"
     required: false
@@ -32,11 +32,11 @@ runs:
 
     - name: Install Mise
       shell: bash
+      if: ${{ inputs.skip-mise-setup != "false" }}
       run: |
-        if [[ "${{ inputs.skip-installing-mise }}" != "false" ]]
-        then
-          echo "Skipping installing Mise"
-        elif [[ "$(uname -s)" =~ ^((((CYGWIN)|(MINGW)).*)|(.*Msys))$ ]]
+        set -eu +o pipefail
+
+        if [[ "$(uname -s)" =~ ^((((CYGWIN)|(MINGW)).*)|(.*Msys))$ ]]
         then
           echo "Installing Mise with Winget"
           winget install jdx.mise --accept-package-agreements --accept-source-agreements
@@ -47,13 +47,10 @@ runs:
           bin_paths="$HOME/.local/share/mise/bin"
         fi
 
-        if [[ -n "${bin_paths:-}" ]]
-        then
-          echo "Adding $bin_paths to \$GITHUB_PATH"
-          echo "$bin_paths" >> $GITHUB_PATH
+        echo "Adding $bin_paths to \$GITHUB_PATH"
+        echo "$bin_paths" >> $GITHUB_PATH
 
-          exec bash
-        fi
+        exec bash
 
         mise trust --all -q --silent
         mise install just ${{ inputs.extra-installs }}
@@ -61,8 +58,6 @@ runs:
     - name: Run Just jobs
       shell: bash
       run: |
-        set +o pipefail
-        mise trust --all -q --silent
-        eval "$(mise env -s bash)"
+        set -eu +o pipefail
 
         just ${{ inputs.task-names }}
