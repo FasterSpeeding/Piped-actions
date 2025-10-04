@@ -29,7 +29,7 @@ runs:
     - name: Install Mise
       uses: jdx/mise-action@156251fcc627ac4e26cb0f93dd47d1d4979abf24 # v3.3.0
       with:
-        install_args: ${{ inputs.install-args }}
+        install_args: just ${{ inputs.extra-installs }}
 
     - name: Run Just jobs
       shell: bash
