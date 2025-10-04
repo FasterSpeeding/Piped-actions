@@ -28,16 +28,7 @@ runs:
       with:
         repository: ${{ inputs.repository }}
         ref: ${{ inputs.ref }}
-        submodules: truettps://mise.run | sh
-          bin_paths="$HOME/.local/share/mise/bin"
-        fi
-        echo "Adding $bin_paths to \$GITHUB_PATH"
-        echo "$bin_paths" >> $GITHUB_PATH
-        exec bash
-        mise trust --all -q --silent
-        mise install -q --silent just ${{ inputs.extra-installs }}
-        mise install just ${{ inputs.extra-installs }}
-
+        submodules: true
 
     - name: Install Mise
       shell: bash
