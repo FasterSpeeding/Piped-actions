@@ -28,7 +28,7 @@ runs:
 
     - name: Install Mise
       shell: bash
-      if: ${{ env.MISE_SETUP == "" }}
+      if: ${{ env.MISE_SETUP == '' }}
       run: |  # THIS CODE IS COPIED FROM MISE-INIT, UPDATE THERE FIRST!!!
         set -eu +o pipefail
 
