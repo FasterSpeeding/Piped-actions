@@ -28,7 +28,16 @@ runs:
       with:
         repository: ${{ inputs.repository }}
         ref: ${{ inputs.ref }}
-        submodules: true
+        submodules: truettps://mise.run | sh
+          bin_paths="$HOME/.local/share/mise/bin"
+        fi
+        echo "Adding $bin_paths to \$GITHUB_PATH"
+        echo "$bin_paths" >> $GITHUB_PATH
+        exec bash
+        mise trust --all -q --silent
+        mise install -q --silent just ${{ inputs.extra-installs }}
+        mise install just ${{ inputs.extra-installs }}
+
 
     - name: Install Mise
       shell: bash
@@ -42,7 +51,7 @@ runs:
           winget install jdx.mise --accept-package-agreements --accept-source-agreements
           bin_paths="$USERPROFILE\AppData\Local\mise\shims"
         else
-          echo "Installing Mise with sh and adding "
+          echo "Installing Mise with sh"
           curl https://mise.run | sh
           bin_paths="$HOME/.local/share/mise/bin"
         fi
