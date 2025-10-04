@@ -59,7 +59,11 @@ runs:
       shell: bash
       run: |  # THIS CODE IS COPIED FROM MISE-INIT, UPDATE THERE FIRST!!!
         set -x
+        set -eu +o pipefail
+
         echo "Exporting Mise env vars"
+        mise env --json
+        mise env --redacte-json
 
         readarray -d $'\0' ignored < <(
           mise env --redacted --json | jq -c --raw-output0 '. | keys_unsorted | .[]')
