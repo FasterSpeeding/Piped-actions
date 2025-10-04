@@ -62,8 +62,7 @@ runs:
         set -eu +o pipefail
 
         echo "Exporting Mise env vars"
-        mise env --json
-        mise env --redacte-json
+        mise env
 
         readarray -d $'\0' ignored < <(
           mise env --redacted --json | jq -c --raw-output0 '. | keys_unsorted | .[]')
