@@ -25,7 +25,7 @@ runs:
     - name: Install Mise
       shell: bash
       run: |
-        if [[ "$(uname -s)" =~ ^((((CYGWIN)|(MINGW)).*)|(.*Msys))$ ]] 
+        if [[ "$(uname -s)" =~ ^((((CYGWIN)|(MINGW)).*)|(.*Msys))$ ]]
         then
           echo "Installing Mise with Winget"
           winget install jdx.mise --accept-package-agreements --accept-source-agreements

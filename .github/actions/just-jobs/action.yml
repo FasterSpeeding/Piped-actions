@@ -45,7 +45,7 @@ runs:
         if [[ "${{ inputs.skip-installing-mise }}" == "false" ]]
         then
           echo "Skipping installing Mise"
-        elif [[ "$(uname -s)" =~ ^((((CYGWIN)|(MINGW)).*)|(.*Msys))$ ]] 
+        elif [[ "$(uname -s)" =~ ^((((CYGWIN)|(MINGW)).*)|(.*Msys))$ ]]
         then
           echo "Installing Mise with Winget"
           winget install jdx.mise --accept-package-agreements --accept-source-agreements
