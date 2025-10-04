@@ -25,12 +25,19 @@ runs:
     - name: Install Mise
       shell: bash
       run: |
-        case "$(uname -s)" in
-          CYGWIN*|MINGW*|*Msys)   winget install jdx.mise --accept-package-agreements --accept-source-agreements && \
-                                    echo "$USERPROFILE\AppData\Local\mise\shims" >> $GITHUB_PATH;;
-          *)                      curl https://mise.run | sh && \
-                                    echo "$HOME/.local/share/mise/bin" >> $GITHUB_PATH;;
-        esac
+        if [[ "$(uname -s)" =~ ^((((CYGWIN)|(MINGW)).*)|(.*Msys))$ ]]
+        then
+          echo "Installing Mise with Winget"
+          winget install jdx.mise --accept-package-agreements --accept-source-agreements
+          bin_paths="$USERPROFILE\AppData\Local\mise\shims"
+        else
+          echo "Installing Mise with sh"
+          curl https://mise.run | sh
+          bin_paths="$HOME/.local/share/mise/bin"
+        fi
+
+        echo "Adding $bin_paths to \$GITHUB_PATH"
+        echo "$bin_paths" >> $GITHUB_PATH
 
         exec bash
 
