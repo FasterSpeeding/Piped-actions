@@ -6,6 +6,9 @@ inputs:
     description: "List of tools to install. If left blank all tooling is installed"
     default: ""
     required: false
+  use-local:
+    description: "List of specific tool versions to use in the local environment"
+    default: ${{ github.repository }}
   repository:
     description: "The repository's name"
     default: ${{ github.repository }}
@@ -27,3 +30,8 @@ runs:
       uses: jdx/mise-action@156251fcc627ac4e26cb0f93dd47d1d4979abf24 # v3.3.0
       with:
         install_args: ${{ inputs.install-args }}
+
+    - name: Install version-specific tools
+      if: ${{ use-local != '' }}
+      shell: bash
+      run: mise use ${{ inputs.use-local }}
