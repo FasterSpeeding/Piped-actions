@@ -16,7 +16,6 @@ runs:
       env:
         INSTALL_DEV_DEPS: true
       run: |
-        set +o pipefail
-        eval "$(mise env -s bash)"
+        set -eu +o pipefail
 
         just check-diff-file
