@@ -46,7 +46,8 @@ runs:
         echo "Adding $bin_paths to \$GITHUB_PATH"
         echo "$bin_paths" >> $GITHUB_PATH
 
-        exec bash
+        # Reload env variables
+        eval "$(exec /usr/bin/env -i "${SHELL}" -l -c "export")"
 
         mise trust --all
         mise install just ${{ inputs.extra-installs }}
