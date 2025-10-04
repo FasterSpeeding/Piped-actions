@@ -11,4 +11,4 @@ on:
 
 jobs:
   lint:
-    uses: FasterSpeeding/Piped/.github/workflows/lint.yml@2964fcf842e52bf35c5efa650cee888df54ce6d1
+    uses: FasterSpeeding/Piped/.github/workflows/lint.yml@d333a97b6d89c83516954b8cf3972546195efed4
