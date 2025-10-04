@@ -21,10 +21,14 @@ runs:
       with:
         repository: ${{ inputs.repository }}
         ref: ${{ inputs.ref }}
+        submodules: true
 
     - name: Install Mise
       shell: bash
+      if: ${{ env.MISE_SETUP == '' }}
       run: |
+        set -eu +o pipefail
+
         if [[ "$(uname -s)" =~ ^((((CYGWIN)|(MINGW)).*)|(.*Msys))$ ]]
         then
           echo "Installing Mise with Winget"
@@ -34,17 +38,22 @@ runs:
           echo "Installing Mise with sh"
           curl https://mise.run | sh
           bin_paths="$HOME/.local/share/mise/bin"
+          echo "$HOME/.local/share/mise/shims" >> $GITHUB_PATH
         fi
 
         echo "Adding $bin_paths to \$GITHUB_PATH"
         echo "$bin_paths" >> $GITHUB_PATH
+        echo "MISE_SETUP=true" >> "$GITHUB_ENV"
 
-        # Reload env variables
-        eval "$(exec /usr/bin/env -i "${SHELL}" -l -c "export")"
-
+    - name: Mise install tools
+      shell: bash
+      run: |  # THIS CODE IS COPIED FROM MISE-INIT, UPDATE THERE FIRST!!!
         mise trust --all
-        mise install ${{ inputs.install-args }}
+        mise install just ${{ inputs.install-args }}
 
+    - name: Export Mise env variables
+      shell: bash
+      run: |  # THIS CODE IS COPIED FROM MISE-INIT, UPDATE THERE FIRST!!!
         echo "Exporting Mise env vars"
 
         readarray -d $'\0' ignored < <(
@@ -55,8 +64,9 @@ runs:
           skip=false
           for ignored_key in "${ignored[@]}"
           do
-            if [[ "$key" == "$ignored_key" ]]
+            if [[ "$key" == "$ignored_key" || "$key" == "PATH" ]]
             then
+              echo "Ignoring env variable \$$key"
               skip=true
               break
             fi
@@ -70,5 +80,3 @@ runs:
             echo "Ignoring env key: $key"
           fi
         done < <(mise env --json | jq -c --raw-output0 '. | to_entries | map([.key, .value]) | flatten | .[]')
-
-        echo "MISE_SETUP=true" >> "$GITHUB_ENV"
