@@ -50,6 +50,7 @@ runs:
       run: |  # THIS CODE IS COPIED FROM MISE-INIT, UPDATE THERE FIRST!!!
         mise trust --all
         mise install just ${{ inputs.install-args }}
+        mise reshim
 
     - name: Export Mise env variables
       shell: bash
