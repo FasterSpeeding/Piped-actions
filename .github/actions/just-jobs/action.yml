@@ -77,7 +77,7 @@ runs:
           fi
         done < <(mise env --json | jq -c --raw-output0 '. | to_entries | map([.key, .value]) | flatten | .[]')
 
-        echo "MISE_SETUP=true"
+        echo "MISE_SETUP=true" >> "$GITHUB_ENV"
 
     - name: Run Just jobs
       shell: bash
