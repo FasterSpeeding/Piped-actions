@@ -59,6 +59,7 @@ runs:
 
         readarray -d $'\0' ignored < <(
           mise env --redacted --json | jq -c --raw-output0 '. | keys_unsorted | .[]')
+        ignore+=("PATH")
 
         while read -r -d $'\0' key; read -r -d $'\0' value
         do
