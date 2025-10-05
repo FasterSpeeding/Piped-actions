@@ -37,3 +37,5 @@ runs:
         set -eu +o pipefail
 
         just ${{ inputs.task-names }}
+      env:
+        SKIP_MISE_INSTALL: true
