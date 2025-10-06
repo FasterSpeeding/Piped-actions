@@ -7,5 +7,5 @@ on:
 
 jobs:
   reformat:
-    uses: FasterSpeeding/Piped/.github/workflows/reformat.yml@81c73169ae0f87dd0ea6eaf6caa75c97daad973b
+    uses: FasterSpeeding/Piped/.github/workflows/reformat.yml@f2718666a9c88b225cc7edcf690b14358a391e90
     secrets: inherit
