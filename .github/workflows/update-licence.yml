@@ -7,5 +7,5 @@ on:
 
 jobs:
   update-licence:
-    uses: FasterSpeeding/Piped/.github/workflows/update-licence.yml@45ffb6bffc26d7abcae7a8f300f60c306cd706eb
+    uses: FasterSpeeding/Piped/.github/workflows/update-licence.yml@12228da1e247a56442874b1b3c8712c27ebdc1a2
     secrets: inherit
