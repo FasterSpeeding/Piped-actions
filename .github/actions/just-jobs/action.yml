@@ -35,7 +35,7 @@ runs:
         install_args: just ${{ inputs.extra-installs }}
 
     - name: Install version-specific tools
-      if: ${{ use-local != '' }}
+      if: ${{ inputs.use-local != '' }}
       shell: bash
       run: mise use --env local ${{ inputs.use-local }}
 
