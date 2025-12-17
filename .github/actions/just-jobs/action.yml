@@ -11,7 +11,7 @@ inputs:
     required: false
   use-local:
     description: "List of specific tool versions to use in the local environment"
-    default: ${{ github.repository }}
+    default: ""
   repository:
     description: "The repository's name"
     default: ${{ github.repository }}
