@@ -6,7 +6,7 @@ python = "3"
 "npm:renovate" = "42.66.9"
 "pipx:codespell" = "2.4.1"
 "pipx:pre-commit-hooks" = "6.0.0"
-uv = "0.9.18"
+uv = "0.9.21"
 just = "1.46.0"
 
 [settings]
